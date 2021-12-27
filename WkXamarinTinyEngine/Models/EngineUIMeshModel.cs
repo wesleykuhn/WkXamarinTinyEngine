@@ -10,16 +10,14 @@ namespace WkXamarinTinyEngine.Models
 
         public ulong LastX { get; }
         public ulong LastY { get; }
-        public double LastPoint { get; }
 
         public double SpaceLenghtBetweenXs { get; }
         public double SpaceLenghtBetweenYs { get; }
 
-        public EngineUIMeshModel(ulong lastX, ulong lastY, ulong lastPoint, double spaceLenghtBetweenXs, double spaceLenghtBetweenYs)
+        public EngineUIMeshModel(ulong lastX, ulong lastY, double spaceLenghtBetweenXs, double spaceLenghtBetweenYs)
         {
             LastX = lastX;
             LastY = lastY;
-            LastPoint = lastPoint;
             SpaceLenghtBetweenXs = spaceLenghtBetweenXs;
             SpaceLenghtBetweenYs = spaceLenghtBetweenYs;
         }

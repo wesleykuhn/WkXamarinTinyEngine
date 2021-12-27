@@ -37,7 +37,6 @@ namespace WkXamarinTinyEngine.Services
             EngineUIMesh = new EngineUIMeshModel(
                 MaxXPoints,
                 MaxYPoints,
-                Converters.EngineUI.UIPointToMergedInt(MaxXPoints, MaxYPoints),
                 spaceLenghtBetweenXs,
                 spaceLenghtBetweenYs);
 
