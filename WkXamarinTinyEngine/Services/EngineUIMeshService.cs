@@ -1,4 +1,5 @@
 ﻿using WkXamarinTinyEngine.Models;
+using WkXamarinTinyEngine.ViewModels;
 using Xamarin.Essentials;
 using Xamarin.Forms;
 
@@ -7,17 +8,17 @@ namespace WkXamarinTinyEngine.Services
 {
     public class EngineUIMeshService : IEngineUIMeshService
     {
-        private const double ReduceScreenSizeFix = 6.3;
+        private const double ReduceScreenSizeFix = 6.3; //6.3
 
-        internal const ulong MaxXPoints = 17; //Always use even numbers
-        internal const ulong MaxYPoints = 11; //Always use even numbers
+        internal const ulong MaxXPoints = 61; //Always use even numbers
+        internal const ulong MaxYPoints = 21; //Always use even numbers
         private ulong SpacesCountBeetweenXs => MaxXPoints - 1;
         private ulong SpacesCountBeetweenYs => MaxYPoints - 1;
 
         public EngineUIMeshModel EngineUIMesh { get; private set; }
 
-        public double DeviceScreenWidth { get; }
-        public double DeviceScreenHeight { get; }
+        public double CurrentScreenWidth { get; private set; }
+        public double CurrentScreenHeight { get; private set; }
 
         public EngineUIMeshService()
         {
@@ -25,14 +26,23 @@ namespace WkXamarinTinyEngine.Services
             double width = mainDisplayInfo.Width / mainDisplayInfo.Density;
             double heigth = mainDisplayInfo.Height / mainDisplayInfo.Density;
 
-            DeviceScreenWidth = width - (width * ReduceScreenSizeFix / 100);
-            DeviceScreenHeight = heigth - (heigth * ReduceScreenSizeFix / 100);
+            CurrentScreenWidth = width - (width * ReduceScreenSizeFix / 100);
+            CurrentScreenHeight = heigth - (heigth * ReduceScreenSizeFix / 100);
         }
 
-        public void SetupUIMeshPoints()
+        private EngineViewModel engineViewModelUsedByGame;
+
+        public void StartEngine(EngineViewModel engineViewModel)
         {
-            var spaceLenghtBetweenXs = DeviceScreenWidth / SpacesCountBeetweenXs;
-            var spaceLenghtBetweenYs = DeviceScreenHeight / SpacesCountBeetweenYs;
+            engineViewModelUsedByGame = engineViewModel;
+
+            CreateNewEngineUIMesh();
+        }
+
+        private void CreateNewEngineUIMesh()
+        {
+            var spaceLenghtBetweenXs = CurrentScreenWidth / SpacesCountBeetweenXs;
+            var spaceLenghtBetweenYs = CurrentScreenHeight / SpacesCountBeetweenYs;
 
             EngineUIMesh = new EngineUIMeshModel(
                 MaxXPoints,
@@ -45,9 +55,19 @@ namespace WkXamarinTinyEngine.Services
                 for (ulong x = 0; x < MaxXPoints; x++)
                 {
                     EngineUIMesh.UIMeshPoints[y, x] = EngineUIMesh.GenerateEngineUIMeshPoint(x, y);
-                    //EngineUIMesh.AddPoint(x, y);
                 }
             }
+        }
+
+        public void ChangeCurrentScreenSize(double newHeight, double newWidth)
+        {
+            CurrentScreenHeight = newHeight;
+            CurrentScreenWidth = newWidth;
+
+            CreateNewEngineUIMesh();
+
+            engineViewModelUsedByGame.CurrentScreenHeight = newHeight;
+            engineViewModelUsedByGame.CurrentScreenWidth = newWidth;
         }
     }
 }

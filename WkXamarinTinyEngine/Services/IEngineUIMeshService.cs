@@ -1,13 +1,15 @@
 ﻿using WkXamarinTinyEngine.Models;
+using WkXamarinTinyEngine.ViewModels;
 
 namespace WkXamarinTinyEngine.Services
 {
     public interface IEngineUIMeshService
     {
         EngineUIMeshModel EngineUIMesh { get; }
-        double DeviceScreenWidth { get; }
-        double DeviceScreenHeight { get; }
+        double CurrentScreenWidth { get; }
+        double CurrentScreenHeight { get; }
 
-        void SetupUIMeshPoints();
+        void StartEngine(EngineViewModel engineViewModel);
+        void ChangeCurrentScreenSize(double newHeight, double newWidth);
     }
 }

@@ -1,62 +1,93 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 using WkXamarinTinyEngine.Services;
 using Xamarin.Forms;
 
 namespace WkXamarinTinyEngine.ViewModels
 {
-    internal class EngineViewModel : BaseViewModel
+    /// <summary>
+    /// The Binding Context of the MainPage/StartupPage need to be set as this class or another one that inherets this class.
+    /// </summary>
+    public class EngineViewModel : INotifyPropertyChanged
     {
-        #region [ SERVICES ]
-
-        internal IEngineUIMeshService EngineUIMeshService;
-
-        private void InitializeServices()
+        private double currentScreenWidth;
+        public double CurrentScreenWidth
         {
-            EngineUIMeshService = DependencyService.Get<IEngineUIMeshService>();
-            EngineUIMeshService.SetupUIMeshPoints();
+            get => currentScreenWidth;
+            set
+            {
+                SetProperty(ref currentScreenWidth, value);
+                RefreshAttachedMainViews();
+            }
         }
 
-        #endregion
-
-        #region [ SCREEN SIZE ]
-
-        private double deviceScreenWidth;
-        public double DeviceScreenWidth
+        private double currentScreenHeight;
+        public double CurrentScreenHeight
         {
-            get => deviceScreenWidth;
-            set => SetProperty(ref deviceScreenWidth, value);
+            get => currentScreenHeight;
+            set
+            {
+                SetProperty(ref currentScreenHeight, value);
+                RefreshAttachedMainViews();
+            }
         }
 
-        private double deviceScreenHeight;
-        public double DeviceScreenHeight
+        private IEngineUIMeshService engineUIMeshService;
+
+        public void Initialize()
         {
-            get => deviceScreenHeight;
-            set => SetProperty(ref deviceScreenHeight, value);
+            engineUIMeshService = DependencyService.Get<IEngineUIMeshService>();
+            engineUIMeshService.StartEngine(this);
+
+            SetupScreenSize();
         }
 
+        private ScrollView attachedScrollView;
+        public void AttachMainScrollView(ScrollView sv)
+        {
+            attachedScrollView = sv;
+        }
+
+        private Grid attachedGrid;
+        public void AttachMainGrid(Grid grid)
+        {
+            attachedGrid = grid;
+        }
+
+        private void RefreshAttachedMainViews()
+        {
+            attachedScrollView?.ForceLayout();
+            attachedGrid?.ForceLayout();
+        }
 
         private void SetupScreenSize()
         {
             Device.BeginInvokeOnMainThread(() =>
             {
-                DeviceScreenHeight = EngineUIMeshService.DeviceScreenHeight;
-                DeviceScreenWidth = EngineUIMeshService.DeviceScreenWidth;
+                CurrentScreenHeight = engineUIMeshService.CurrentScreenHeight;
+                CurrentScreenWidth = engineUIMeshService.CurrentScreenWidth;
             });
         }
 
-        #endregion
-
-        public override Task InitAsync(object args = null)
+        protected bool SetProperty<T>(ref T backingStore, T value, [CallerMemberName] string propertyName = "")
         {
-            IsBusy = true;
+            if (EqualityComparer<T>.Default.Equals(backingStore, value)) return false;
 
-            InitializeServices();
+            backingStore = value;
 
-            SetupScreenSize();
+            OnPropertyChanged(propertyName);
 
-            IsBusy = false;
+            return true;
+        }
 
-            return Task.CompletedTask;
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        protected void OnPropertyChanged([CallerMemberName] string propertyName = "")
+        {
+            var changed = PropertyChanged;
+
+            changed?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }
