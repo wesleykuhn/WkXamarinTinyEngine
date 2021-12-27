@@ -22,12 +22,6 @@
                             WidthRequest="{TemplateBinding BindingContext.DeviceScreenWidth}">
 
                     <ContentPresenter />
-
-                    <!--<Grid BackgroundColor="#222222"
-                          HeightRequest="{TemplateBinding BindingContext.DeviceScreenHeight}"
-                          WidthRequest="{TemplateBinding BindingContext.DeviceScreenWidth}"
-                          RowDefinitions="Auto"
-                          ColumnDefinitions="Auto"></Grid>-->
                 </ScrollView>
             </ControlTemplate>
         </ResourceDictionary>

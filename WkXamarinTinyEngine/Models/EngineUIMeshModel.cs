@@ -1,10 +1,12 @@
 ﻿using System.Collections.Generic;
+using WkXamarinTinyEngine.Services;
 
 namespace WkXamarinTinyEngine.Models
 {
     public class EngineUIMeshModel
     {
-        public Dictionary<ulong, EngineUIMeshPointModel> UIMeshPoints { get; set; }
+        //public Dictionary<ulong, EngineUIMeshPointModel> UIMeshPoints { get; set; }
+        public EngineUIMeshPointModel[,] UIMeshPoints { get; set; } = new EngineUIMeshPointModel[EngineUIMeshService.MaxYPoints, EngineUIMeshService.MaxXPoints];
 
         public ulong LastX { get; }
         public ulong LastY { get; }
@@ -15,7 +17,6 @@ namespace WkXamarinTinyEngine.Models
 
         public EngineUIMeshModel(ulong lastX, ulong lastY, ulong lastPoint, double spaceLenghtBetweenXs, double spaceLenghtBetweenYs)
         {
-            UIMeshPoints = new Dictionary<ulong, EngineUIMeshPointModel>();
             LastX = lastX;
             LastY = lastY;
             LastPoint = lastPoint;
@@ -23,7 +24,10 @@ namespace WkXamarinTinyEngine.Models
             SpaceLenghtBetweenYs = spaceLenghtBetweenYs;
         }
 
-        public void AddPoint(ulong x, ulong y) =>
-            this.UIMeshPoints.Add(Converters.EngineUI.UIPointToMergedInt(x, y), new EngineUIMeshPointModel(x, y, x * SpaceLenghtBetweenXs, y * SpaceLenghtBetweenYs));
+        public EngineUIMeshPointModel GenerateEngineUIMeshPoint(ulong x, ulong y) =>
+            new EngineUIMeshPointModel(x, y, x * SpaceLenghtBetweenXs, y * SpaceLenghtBetweenYs);
+
+        //public void AddPoint(ulong x, ulong y) =>
+        //    this.UIMeshPoints.Add(Converters.EngineUI.UIPointToMergedInt(x, y), );
     }
 }

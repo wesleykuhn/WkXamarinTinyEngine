@@ -21,29 +21,30 @@ namespace WkXamarinTinyEngine.Services
             engineUIMeshService = DependencyService.Get<IEngineUIMeshService>();
         }
 
-        public void RegisterElement(View element, double width, double height, ulong originalUIMeshPointKey)
+        public void RegisterElement(View element, double width, double height, ulong originalUIMeshPointX, ulong originalUIMeshPointY)
         {
             UIElementsInformation.Add(element, new EngineUIElementInfoModel
             {
                 Width = width,
                 Height = height,
-                OriginalUIMeshPointKey = originalUIMeshPointKey,
-                CurrentUIMeshPointKey = originalUIMeshPointKey
+                OriginalUIMeshPointX = originalUIMeshPointX,
+                OriginalUIMeshPointY = originalUIMeshPointY,
+                CurrentUIMeshPointX = originalUIMeshPointX,
+                CurrentUIMeshPointY = originalUIMeshPointY,
             });
         }
 
-        public void PlaceAllElementsAtMainGridOfEnginePage(ref Grid mainGrid)
+        public void PlaceAllElementsAtMainGridOfEnginePage(Grid mainGrid)
         {
             foreach (var element in UIElementsInformation)
             {
-                var elementView = element.Key;
+                var elementPoint = engineUIMeshService.EngineUIMesh.UIMeshPoints[element.Value.OriginalUIMeshPointY, element.Value.OriginalUIMeshPointX];
 
-                var elementPoint = engineUIMeshService.EngineUIMesh.UIMeshPoints[element.Value.OriginalUIMeshPointKey];
-
-                mainGrid.Children.Add(elementView);
-
-                elementView.TranslationX = elementPoint.AbsoluteScreenWidth;
-                elementView.TranslationY = elementPoint.AbsoluteScreenHeight;
+                mainGrid.Children.Add(element.Key);
+                element.Key.TranslationX = elementPoint.AbsoluteScreenWidth;
+                element.Key.TranslationY = elementPoint.AbsoluteScreenHeight;
+                element.Key.WidthRequest = element.Value.Width;
+                element.Key.HeightRequest = element.Value.Height;
             }
         }
     }

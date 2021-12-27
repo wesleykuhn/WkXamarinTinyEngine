@@ -8,7 +8,7 @@ namespace WkXamarinTinyEngine.Services
     {
         Dictionary<View, EngineUIElementInfoModel> UIElementsInformation { get; set; }
 
-        void PlaceAllElementsAtMainGridOfEnginePage(ref Grid mainGrid);
-        void RegisterElement(View element, double width, double height, ulong originalUIMeshPointKey);
+        void PlaceAllElementsAtMainGridOfEnginePage(Grid mainGrid);
+        void RegisterElement(View element, double width, double height, ulong originalUIMeshPointX, ulong originalUIMeshPointY);
     }
 }

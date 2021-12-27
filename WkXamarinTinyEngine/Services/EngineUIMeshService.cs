@@ -9,8 +9,8 @@ namespace WkXamarinTinyEngine.Services
     {
         private const double ReduceScreenSizeFix = 6.3;
 
-        private const ulong MaxXPoints = 17; //Always use even numbers
-        private const ulong MaxYPoints = 11; //Always use even numbers
+        internal const ulong MaxXPoints = 17; //Always use even numbers
+        internal const ulong MaxYPoints = 11; //Always use even numbers
         private ulong SpacesCountBeetweenXs => MaxXPoints - 1;
         private ulong SpacesCountBeetweenYs => MaxYPoints - 1;
 
@@ -45,7 +45,8 @@ namespace WkXamarinTinyEngine.Services
             {
                 for (ulong x = 0; x < MaxXPoints; x++)
                 {
-                    EngineUIMesh.AddPoint(x, y);
+                    EngineUIMesh.UIMeshPoints[y, x] = EngineUIMesh.GenerateEngineUIMeshPoint(x, y);
+                    //EngineUIMesh.AddPoint(x, y);
                 }
             }
         }
