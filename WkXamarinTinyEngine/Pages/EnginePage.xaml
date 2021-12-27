@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="WkXamarinTinyEngine.Pages.EnginePage"
+             xmlns:viewModels="clr-namespace:WkXamarinTinyEngine.ViewModels"
+             BackgroundColor="#222222">
+
+    <ContentPage.BindingContext>
+        <viewModels:EngineViewModel />
+    </ContentPage.BindingContext>
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <ControlTemplate x:Key="engineControlTemplate">
+                <!-- HEADER -->
+                <!-- Always remember: The engine will follow the cascade hierarchy when displaying items above items.-->
+                <!-- And dont forget to inheret this page add this control template on/to your games main page -->
+                <ScrollView Orientation="Both"
+                            HorizontalOptions="FillAndExpand"
+                            VerticalOptions="FillAndExpand"
+                            HeightRequest="{TemplateBinding BindingContext.DeviceScreenHeight}"
+                            WidthRequest="{TemplateBinding BindingContext.DeviceScreenWidth}">
+
+                    <Grid BackgroundColor="#222222"
+                          HeightRequest="{TemplateBinding BindingContext.DeviceScreenHeight}"
+                          WidthRequest="{TemplateBinding BindingContext.DeviceScreenWidth}"
+                          RowDefinitions="Auto"
+                          ColumnDefinitions="Auto">
+
+                        <ContentPresenter />
+
+                    </Grid>
+                </ScrollView>
+            </ControlTemplate>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+</ContentPage>
