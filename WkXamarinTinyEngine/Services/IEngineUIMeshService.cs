@@ -1,4 +1,4 @@
-﻿using WkXamarinTinyEngine.Models;
+﻿using WkXamarinTinyEngine.Models.EngineUI;
 using WkXamarinTinyEngine.ViewModels;
 
 namespace WkXamarinTinyEngine.Services

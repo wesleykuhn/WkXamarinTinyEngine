@@ -1,7 +1,6 @@
-﻿using System.Collections.Generic;
-using WkXamarinTinyEngine.Services;
+﻿using WkXamarinTinyEngine.Services;
 
-namespace WkXamarinTinyEngine.Models
+namespace WkXamarinTinyEngine.Models.EngineUI
 {
     public class EngineUIMeshModel
     {

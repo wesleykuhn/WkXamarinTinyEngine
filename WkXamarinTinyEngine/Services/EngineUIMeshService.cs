@@ -1,4 +1,4 @@
-﻿using WkXamarinTinyEngine.Models;
+﻿using WkXamarinTinyEngine.Models.EngineUI;
 using WkXamarinTinyEngine.ViewModels;
 using Xamarin.Essentials;
 using Xamarin.Forms;
@@ -37,6 +37,9 @@ namespace WkXamarinTinyEngine.Services
             engineViewModelUsedByGame = engineViewModel;
 
             CreateNewEngineUIMesh();
+
+            var engineUIElementsService = DependencyService.Get<IEngineUIElementsService>();
+            engineUIElementsService.Initialize(engineViewModelUsedByGame.AttachedGrid);
         }
 
         private void CreateNewEngineUIMesh()

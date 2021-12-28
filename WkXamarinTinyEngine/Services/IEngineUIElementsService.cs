@@ -1,14 +1,16 @@
-﻿using WkXamarinTinyEngine.Models;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using WkXamarinTinyEngine.Models.EngineUIElements;
 using Xamarin.Forms;
 
 namespace WkXamarinTinyEngine.Services
 {
     public interface IEngineUIElementsService
     {
-        Dictionary<View, EngineUIElementInfoModel> UIElementsInformation { get; set; }
+        List<ViewUIElementModel> CurrentUIElements { get; set; }
+        Grid MainGameGrid { get; }
 
-        void PlaceAllElementsAtMainGridOfEnginePage(Grid mainGrid);
-        void RegisterElement(View element, double width, double height, ulong originalUIMeshPointX, ulong originalUIMeshPointY);
+        void Initialize(Grid mainGameGrid);
+        void AddElementToCurrentScreen(ViewUIElementModel viewUIElement);
+        void AddElementsToCurrentScreen(IEnumerable<ViewUIElementModel> viewUIElements);
     }
 }

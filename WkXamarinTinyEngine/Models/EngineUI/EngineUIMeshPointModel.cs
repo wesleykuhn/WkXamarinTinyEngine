@@ -1,4 +1,4 @@
-﻿namespace WkXamarinTinyEngine.Models
+﻿namespace WkXamarinTinyEngine.Models.EngineUI
 {
     public class EngineUIMeshPointModel
     {

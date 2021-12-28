@@ -34,31 +34,24 @@ namespace WkXamarinTinyEngine.ViewModels
         }
 
         private IEngineUIMeshService engineUIMeshService;
+        private ScrollView attachedScrollView;
+        internal Grid AttachedGrid;
 
-        public void Initialize()
+        public void Initialize(ScrollView mainScrollView, Grid mainGrid)
         {
+            attachedScrollView = mainScrollView;
+            AttachedGrid = mainGrid;
+
             engineUIMeshService = DependencyService.Get<IEngineUIMeshService>();
             engineUIMeshService.StartEngine(this);
 
             SetupScreenSize();
         }
 
-        private ScrollView attachedScrollView;
-        public void AttachMainScrollView(ScrollView sv)
-        {
-            attachedScrollView = sv;
-        }
-
-        private Grid attachedGrid;
-        public void AttachMainGrid(Grid grid)
-        {
-            attachedGrid = grid;
-        }
-
         private void RefreshAttachedMainViews()
         {
             attachedScrollView?.ForceLayout();
-            attachedGrid?.ForceLayout();
+            AttachedGrid?.ForceLayout();
         }
 
         private void SetupScreenSize()

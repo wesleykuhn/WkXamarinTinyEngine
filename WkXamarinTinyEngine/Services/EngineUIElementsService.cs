@@ -1,5 +1,5 @@
-﻿using WkXamarinTinyEngine.Models;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using WkXamarinTinyEngine.Models.EngineUIElements;
 using Xamarin.Forms;
 
 [assembly: Dependency(typeof(WkXamarinTinyEngine.Services.EngineUIElementsService))]
@@ -10,42 +10,46 @@ namespace WkXamarinTinyEngine.Services
     /// </summary>
     public class EngineUIElementsService : IEngineUIElementsService
     {
-        public Dictionary<View, EngineUIElementInfoModel> UIElementsInformation { get; set; }
+        public List<ViewUIElementModel> CurrentUIElements { get; set; }
+        public Grid MainGameGrid { get; private set; }
 
         private IEngineUIMeshService engineUIMeshService;
         public EngineUIElementsService()
         {
-            if (UIElementsInformation is null)
-                UIElementsInformation = new Dictionary<View, EngineUIElementInfoModel>();
+            if (CurrentUIElements is null)
+                CurrentUIElements = new List<ViewUIElementModel>();
 
             engineUIMeshService = DependencyService.Get<IEngineUIMeshService>();
         }
 
-        public void RegisterElement(View element, double width, double height, ulong originalUIMeshPointX, ulong originalUIMeshPointY)
+        public void Initialize(Grid mainGameGrid)
         {
-            UIElementsInformation.Add(element, new EngineUIElementInfoModel
-            {
-                Width = width,
-                Height = height,
-                OriginalUIMeshPointX = originalUIMeshPointX,
-                OriginalUIMeshPointY = originalUIMeshPointY,
-                CurrentUIMeshPointX = originalUIMeshPointX,
-                CurrentUIMeshPointY = originalUIMeshPointY,
-            });
+            MainGameGrid = mainGameGrid;
         }
 
-        public void PlaceAllElementsAtMainGridOfEnginePage(Grid mainGrid)
+        public void AddElementToCurrentScreen(ViewUIElementModel viewUIElement)
         {
-            foreach (var element in UIElementsInformation)
-            {
-                var elementPoint = engineUIMeshService.EngineUIMesh.UIMeshPoints[element.Value.OriginalUIMeshPointY, element.Value.OriginalUIMeshPointX];
+            CurrentUIElements.Add(viewUIElement);
+            PlaceElementAtMainGridOfEnginePage(viewUIElement);
+        }
 
-                mainGrid.Children.Add(element.Key);
-                element.Key.TranslationX = elementPoint.AbsoluteScreenWidth;
-                element.Key.TranslationY = elementPoint.AbsoluteScreenHeight;
-                element.Key.WidthRequest = element.Value.Width;
-                element.Key.HeightRequest = element.Value.Height;
+        public void AddElementsToCurrentScreen(IEnumerable<ViewUIElementModel> viewUIElements)
+        {
+            foreach (var element in viewUIElements)
+            {
+                AddElementToCurrentScreen(element);
             }
+        }
+
+        private void PlaceElementAtMainGridOfEnginePage(ViewUIElementModel viewUIElement)
+        {
+            var targetPoint = engineUIMeshService.EngineUIMesh.UIMeshPoints[viewUIElement.CurrentUIMeshYPoint, viewUIElement.CurrentUIMeshXPoint];
+
+            MainGameGrid.Children.Add(viewUIElement.View);
+            viewUIElement.View.TranslationX = targetPoint.AbsoluteScreenWidth;
+            viewUIElement.View.TranslationY = targetPoint.AbsoluteScreenHeight;
+            viewUIElement.View.WidthRequest = viewUIElement.CurrentWidth;
+            viewUIElement.View.HeightRequest = viewUIElement.CurrentHeight;
         }
     }
 }
