@@ -1,15 +1,16 @@
 ﻿using WkXamarinTinyEngine.Models.EngineUI;
+using WkXamarinTinyEngine.Models.Settings;
 using WkXamarinTinyEngine.ViewModels;
 
 namespace WkXamarinTinyEngine.Services
 {
     public interface IEngineUIMeshService
     {
-        EngineUIMeshModel EngineUIMesh { get; }
+        EngineUIMesh EngineUIMesh { get; }
         double CurrentScreenWidth { get; }
         double CurrentScreenHeight { get; }
 
-        void StartEngine(EngineViewModel engineViewModel);
+        void Initialize(EngineViewModel engineViewModel, EngineSettings engineSettings);
         void ChangeCurrentScreenSize(double newHeight, double newWidth);
     }
 }

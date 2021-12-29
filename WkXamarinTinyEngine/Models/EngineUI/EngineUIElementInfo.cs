@@ -1,6 +1,6 @@
 ﻿namespace WkXamarinTinyEngine.Models.EngineUI
 {
-    public class EngineUIElementInfoModel
+    public class EngineUIElementInfo
     {
         public double Width { get; set; }
         public double Height { get; set; }

@@ -1,8 +1,9 @@
 ﻿namespace WkXamarinTinyEngine.Models.EngineUIElements
 {
-    public class BaseEngineUIElementModel
+    public class BaseEngineUIElement
     {
         public int Id { get; set; }
+        public string Name { get; set; }
         public double CurrentHeight { get; set; }
         public double CurrentWidth { get; set; }
         public ulong OriginalUIMeshXPoint { get; set; }

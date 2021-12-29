@@ -1,13 +1,13 @@
 ﻿namespace WkXamarinTinyEngine.Models.EngineUI
 {
-    public class EngineUIMeshPointModel
+    public class EngineUIMeshPoint
     {
         public ulong X { get; }
         public ulong Y { get; }
         public double AbsoluteScreenWidth { get; }
         public double AbsoluteScreenHeight { get; }
 
-        public EngineUIMeshPointModel(ulong x, ulong y, double absoluteScreenWidth, double absoluteScreenHeight)
+        public EngineUIMeshPoint(ulong x, ulong y, double absoluteScreenWidth, double absoluteScreenHeight)
         {
             X = x;
             Y = y;

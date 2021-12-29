@@ -1,8 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using WkXamarinTinyEngine.Models.Settings;
 using WkXamarinTinyEngine.Services;
 using Xamarin.Forms;
+using System;
 
 namespace WkXamarinTinyEngine.ViewModels
 {
@@ -37,15 +39,21 @@ namespace WkXamarinTinyEngine.ViewModels
         private ScrollView attachedScrollView;
         internal Grid AttachedGrid;
 
-        public void Initialize(ScrollView mainScrollView, Grid mainGrid)
+        /// <summary>
+        /// Starts the engine with desired configurations.
+        /// </summary>
+        /// <param name="mainScrollView">(Optional) You can use a Scroll View as parent of the Main View.</param>
+        /// <param name="mainGrid">The required main grid of the engine. This element will be the parent of all your UI elements.</param>
+        /// <param name="engineSettings">(Optional) The settings of the engine.</param>
+        public void StartEngine(ScrollView mainScrollView, Grid mainGrid, EngineSettings engineSettings = null)
         {
             attachedScrollView = mainScrollView;
-            AttachedGrid = mainGrid;
+            AttachedGrid = mainGrid ?? throw new Exception("The Main Grid, in the StartEngine() parameter, cannot be null!");
 
             engineUIMeshService = DependencyService.Get<IEngineUIMeshService>();
-            engineUIMeshService.StartEngine(this);
+            engineUIMeshService.Initialize(this, engineSettings);
 
-            SetupScreenSize();
+            ChangeCurrentScreenSize();
         }
 
         private void RefreshAttachedMainViews()
@@ -54,7 +62,7 @@ namespace WkXamarinTinyEngine.ViewModels
             AttachedGrid?.ForceLayout();
         }
 
-        private void SetupScreenSize()
+        private void ChangeCurrentScreenSize()
         {
             Device.BeginInvokeOnMainThread(() =>
             {
